@@ -121,14 +121,15 @@ const onClickCell = (cell, index, checked) => {
 
 const updateSquares = (squares, checked) => {
     squares.forEach((cell, index) => {
-        document.getElementById("win_pico").innerText = "";
-        cell.classList.replace("cell-active", "cell-hover");
-        cell.classList.remove("text-white");
+        document.getElementById("win_pico").innerText = "";     
         cell.children[0].innerText = dict[index];
         if (checked[index]) {
             cell.classList.add("cell-active");
             cell.classList.add("text-white");
             cell.classList.remove("cell-active", "cell-hover");
+        }else{
+            cell.classList.replace("cell-active", "cell-hover");
+            cell.classList.remove("text-white");
         }
         onClickCell(cell, index, checked);
     });
