@@ -86,6 +86,8 @@ const shuffleArray = (device_unique_seed) => {
 const win = () => {
     localStorage.setItem("win", JSON.stringify(true));
     alert("Bingo!");
+
+    localStorage.setItem("win", JSON.stringify(false));
 };
 
 const check_win = (checked) => {
