@@ -126,7 +126,6 @@ const updateSquares = (squares, checked) => {
         if (checked[index]) {
             cell.classList.add("cell-active");
             cell.classList.add("text-white");
-            cell.classList.remove("cell-active", "cell-hover");
         }else{
             cell.classList.replace("cell-active", "cell-hover");
             cell.classList.remove("text-white");
