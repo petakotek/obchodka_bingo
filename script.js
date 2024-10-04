@@ -39,38 +39,24 @@ const setLocalStorage = () => {
 };
 
 const setCookie = (today) => {
-    // random Universally Unique Identifier stored in cookie, expires at midnight 
     let device_unique_seed = "";
-
-    // get UUID from cookie
     const parts = document.cookie.split("; ");
-
-    // find unq seed in cookie
     device_unique_seed = parts.find((row) => row.startsWith("obchodka_bingo_device_unique_seed="))?.split("=")[1];
 
-    if (!device_unique_seed){
+    if (!device_unique_seed) {
         setLocalStorage();
-
         device_unique_seed = crypto.randomUUID();
 
-        let midnight = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            23,
-            59,
-            59
-        );
-
+        let midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0);
         let expires = "; expires=" + midnight.toGMTString();
         document.cookie = "obchodka_bingo_device_unique_seed=" + device_unique_seed + expires + "; path=/";
 
-        //parse array from localStorage
         const checked = JSON.parse(localStorage.getItem("checked"));
-
+        return [device_unique_seed, checked];
+    } else {
+        const checked = JSON.parse(localStorage.getItem("checked"));
         return [device_unique_seed, checked];
     }
-
 };
 
 const shuffleArray = (device_unique_seed) => {
