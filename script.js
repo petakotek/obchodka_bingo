@@ -16,18 +16,9 @@ let dict = [
     "zavři ty dveře",
     "paní ředitelka",
     "stránky školy",
+    "Vy nic nevíte!",
+    "Your sincerely",
 ];
-
-const setToday = (today) => {
-    let date_text = 
-                    String(today.getDate()) +
-                    ". " +
-                    String(today.getMonth() +1 ) +
-                    ". " +
-                    String(today.getFullYear());
-
-    document.getElementById("header_date").innerText = date_text;
-}
 
 const setLocalStorage = () => {
     const checked = Array(16).fill(false);
@@ -141,32 +132,46 @@ const onClickCell = (cell, index, checked) => {
         };
 };
 
-
 document.addEventListener("DOMContentLoaded", () => {
     mainLoop();
+    
+    
+    
 });
 
 const mainLoop = () => {
     let today = new Date();
-    setToday(today);
+    let shuffleButton = document.getElementById("shuffle");
+
 
     let [device_unique_seed, checked] = setCookie(today);
-    console.log("Načtený device_unique_seed:", device_unique_seed);
-    console.log("Načtené checked:", checked);
+
+
+    const updateSquares = () => {
+        let squares = document.getElementsByClassName("square");
+        squares = [...squares];
+
+        squares.forEach((cell, index) => {
+            cell.children[0].innerText = dict[index];
+            if (checked[index]) {
+                cell.classList.add("cell-active");
+                cell.classList.remove("cell-hover");
+            } else {
+                cell.classList.remove("cell-active");
+                cell.classList.add("cell-hover");
+            }
+
+            onClickCell(cell, index, checked);
+        });
+    };
 
     shuffleArray(device_unique_seed);
+    updateSquares();
 
-    let squares = document.getElementsByClassName("square");
-    squares = [...squares];
-
-    squares.forEach((cell) => {
-        let index = squares.indexOf(cell);
-        cell.children[0].innerText = dict[index];
-        if (checked[index]) {
-            cell.classList.add("cell-active");
-            cell.classList.remove("cell-hover");
-        }
-
-        onClickCell(cell, index, checked);
-    });
+    shuffleButton.onclick = () => {
+        shuffleArray(device_unique_seed);
+        checked.fill(false); // Resetování stavu aktivních buněk
+        localStorage.setItem("checked", JSON.stringify(checked));
+        updateSquares(); 
+    };
 };
