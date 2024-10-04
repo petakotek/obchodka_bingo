@@ -112,7 +112,7 @@ const onClickCell = (cell, index, checked) => {
             document.getElementById("win_pico").innerText = "";
             this.classList.remove("cell-active");
             this.classList.add("cell-hover");
-            cell.classList.remove("text-white");
+            this.classList.remove("text-white");
         }
         localStorage.setItem("checked", JSON.stringify(checked));
         check_win(checked);
