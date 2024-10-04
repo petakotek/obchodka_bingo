@@ -46,7 +46,7 @@ const setCookie = (today) => {
     const parts = document.cookie.split("; ");
 
     // find unq seed in cookie
-    device_unique_seed = parts.find((row) => row.startsWith("obchodka_bind_device_unique_seed="))?.split("=")[1];
+    device_unique_seed = parts.find((row) => row.startsWith("obchodka_bingo_device_unique_seed="))?.split("=")[1];
 
     if (!device_unique_seed){
         setLocalStorage();
