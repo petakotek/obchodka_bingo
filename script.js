@@ -142,12 +142,18 @@ const onClickCell = (cell, index, checked) => {
 };
 
 
-const mainLoop = () => {
+document.addEventListener("DOMContentLoaded", () => {
+    mainLoop();
+});
 
+const mainLoop = () => {
     let today = new Date();
     setToday(today);
 
     let [device_unique_seed, checked] = setCookie(today);
+    console.log("Načtený device_unique_seed:", device_unique_seed);
+    console.log("Načtené checked:", checked);
+
     shuffleArray(device_unique_seed);
 
     let squares = document.getElementsByClassName("square");
@@ -157,12 +163,10 @@ const mainLoop = () => {
         let index = squares.indexOf(cell);
         cell.children[0].innerText = dict[index];
         if (checked[index]) {
-            this.classList.add("cell-active");
-            this.classList.remove("cell-hover");
+            cell.classList.add("cell-active");
+            cell.classList.remove("cell-hover");
         }
-        
+
         onClickCell(cell, index, checked);
     });
 };
-
-mainLoop();
