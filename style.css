@@ -9,7 +9,6 @@
     box-sizing: border-box;
     color: #36395A;
     cursor: pointer;
-    font-family: "JetBrains Mono", monospace;
     line-height: 1;
     transition: box-shadow .15s, transform .15s;
     user-select: none;
@@ -21,7 +20,7 @@
     display: flex;
     justify-content: center;
     border: 2px solid #ccc; 
-    padding: 10px;
+    padding: 5px;
     max-width: 100px;
 
     /* break sentence */
@@ -64,7 +63,7 @@
 
 .bingo-grid {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 100px);
     gap: 10px;
 }

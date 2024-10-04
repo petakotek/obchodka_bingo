@@ -2,14 +2,14 @@ let dict = [
     "člověčee!",
     "vypněte ty plácačky",
     "nohejbal",
-    "to jste Vy mladí",
+    "Vy mladí",
     "maturita",
     "Coca-Cola",
     "pivní kvíz",
     "přestávku?",
     "podtácek",
     "přezůvky",
-    "pouze technický dotaz",
+    "technický dotaz",
     "mládeži",
     "máte to v edookitu",
     "dáme si bingo",
@@ -28,7 +28,7 @@ const setToday = (today) => {
                     ". " +
                     String(today.getFullYear());
 
-    document.getElementById("header_date").innerText = date_text;
+    // document.getElementById("header_date").innerText = date_text;
 };
 
 const setLocalStorage = () => {
