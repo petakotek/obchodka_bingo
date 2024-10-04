@@ -17,7 +17,6 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    white-space: nowrap;
     will-change: box-shadow, transform;
     font-size: 18px; 
     display: flex;
@@ -86,7 +85,6 @@
 .accordion-button{
     background: #ffaab0!important;
 }
-
 
 .accordion-button:focus {
     outline: none!important;
