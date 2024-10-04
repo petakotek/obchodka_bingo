@@ -20,11 +20,19 @@ let dict = [
     "Your sincerely",
 ];
 
+const setToday = (today) => {
+    let date_text = 
+                    String(today.getDate()) +
+                    ". " +
+                    String(today.getMonth() + 1) +
+                    ". " +
+                    String(today.getFullYear());
+
+    document.getElementById("header_date").innerText = date_text;
+};
+
 const setLocalStorage = () => {
     const checked = Array(16).fill(false);
-    localStorage.removeItem("checked");
-    localStorage.removeItem("win");
-
     localStorage.setItem("checked", JSON.stringify(checked));
     localStorage.setItem("win", JSON.stringify(false));
 };
@@ -43,7 +51,6 @@ const setCookie = (today, shuffledOrder) => {
         document.cookie = "obchodka_bingo_device_unique_seed=" + device_unique_seed + expires + "; path=/";
     }
 
-    // Uložení promíchaného pořadí do cookies
     if (shuffledOrder) {
         document.cookie = "shuffledOrder=" + shuffledOrder + "; path=/";
     }
@@ -53,93 +60,72 @@ const setCookie = (today, shuffledOrder) => {
 };
 
 const shuffleArray = (device_unique_seed) => {
-    // shuffle
     let random_gen = new Math.seedrandom(device_unique_seed);
-
-    for (i = 0; i < dict.length; ++i){
-        var swap_index = Math.floor(random_gen.quick() * dict.length);
-        [dict[swap_index], dict[i]] = [dict[i], dict[swap_index]];
+    for (let i = 0; i < dict.length; ++i) {
+        let swap_index = Math.floor(random_gen.quick() * dict.length);
+        [dict[i], dict[swap_index]] = [dict[swap_index], dict[i]];
     }
 };
 
 const win = () => {
     localStorage.setItem("win", JSON.stringify(true));
     alert("Bingo!");
-
     localStorage.setItem("win", JSON.stringify(false));
 };
 
 const check_win = (checked) => {
     let won = JSON.parse(localStorage.getItem("win"));
+    if (won) return;
 
-    if (won){
-        return;
-    }
-
-    //columns
-    for (x = 0; x < 4; ++x){
-        column_full = true;
-        for (y = 0; y < 4; ++y){
-
-            if (!checked[y * 4 + x]){
-                column_full = false;
-            }
-
-        }
-        if (column_full) {
+    for (let x = 0; x < 4; ++x) {
+        if (checked[x] && checked[x + 4] && checked[x + 8] && checked[x + 12]) {
             win();
             return;
         }
     }
 
-    //rows
-    for (y = 0; y < 4; ++y){
-        row_full = true;
-        for (x = 0; x < 4; ++x){
-
-            if (!checked[y * 4 + x]){
-                row_full = false;
-            }
-
-        }
-        if (row_full) {
+    for (let y = 0; y < 4; ++y) {
+        if (checked[y * 4] && checked[y * 4 + 1] && checked[y * 4 + 2] && checked[y * 4 + 3]) {
             win();
             return;
         }
     }
 
-    // diagonal
-    if (checked[0] && checked[5] && checked[10] &&  checked[15]){
+    if (checked[0] && checked[5] && checked[10] && checked[15]) {
         win();
         return;
     }
-    if (checked[3] && checked[6] && checked[9] &&  checked[12]){
+    if (checked[3] && checked[6] && checked[9] && checked[12]) {
         win();
         return;
     }
 };
 
 const onClickCell = (cell, index, checked) => {
-        cell.onclick = function () {
-            checked[index] = !checked[index];
-            if (checked[index]){
-                this.classList.add("cell-active");
-                this.classList.remove("cell-hover");
-            }else {
-                this.classList.remove("cell-active");
-                this.classList.add("cell-hover");
-            }
-            localStorage.setItem("checked", JSON.stringify(checked));
-            check_win(checked);
-        };
+    cell.onclick = function () {
+        checked[index] = !checked[index];
+        if (checked[index]) {
+            this.classList.add("cell-active");
+            this.classList.remove("cell-hover");
+        } else {
+            this.classList.remove("cell-active");
+            this.classList.add("cell-hover");
+        }
+        localStorage.setItem("checked", JSON.stringify(checked));
+        check_win(checked);
+    };
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    mainLoop();
-    
-    
-    
-});
+const updateSquares = (squares, checked) => {
+    squares.forEach((cell, index) => {
+        cell.classList.remove("cell-active", "cell-hover");
+        cell.children[0].innerText = dict[index];
+        if (checked[index]) {
+            cell.classList.add("cell-active");
+        }
+        onClickCell(cell, index, checked);
+    });
+};
 
 const mainLoop = () => {
     let today = new Date();
@@ -148,45 +134,33 @@ const mainLoop = () => {
     setToday(today);
 
     let [device_unique_seed, checked] = setCookie(today);
-
-    // Načtení promíchaného pořadí z cookies, pokud existuje
     let shuffledOrder = getCookie("shuffledOrder");
+    
     if (shuffledOrder) {
         dict = JSON.parse(shuffledOrder);
     } else {
-        shuffleArray(device_unique_seed); // První promíchání
+        shuffleArray(device_unique_seed);
     }
 
-    const updateSquares = () => {
-        let squares = document.getElementsByClassName("square");
-        squares = [...squares];
-
-        squares.forEach((cell, index) => {
-            cell.classList.remove("cell-active", "cell-hover");
-            cell.children[0].innerText = dict[index];
-            if (checked[index]) {
-                cell.classList.add("cell-active");
-            }
-        });
-    };
-
-    updateSquares();
+    let squares = document.getElementsByClassName("square");
+    squares = [...squares];
+    updateSquares(squares, checked);
 
     shuffleButton.onclick = () => {
         shuffleArray(device_unique_seed);
         checked.fill(false);
         localStorage.setItem("checked", JSON.stringify(checked));
-
-        // Uložení nového promíchaného pořadí do cookies
         setCookie(today, JSON.stringify(dict));
-
-        updateSquares();
+        updateSquares(squares, checked);
     };
 };
 
-// Funkce pro získání hodnoty cookie
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    mainLoop();
+});
