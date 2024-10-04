@@ -1,3 +1,6 @@
+ :root{
+    --gray: #6f6f6f;
+ }
  /* Default button style  */
  .cell {
     align-items: center;
@@ -34,7 +37,8 @@
 .cell:focus {
     /* background: lime; */
     /* tohle dela ten vronerej efekt  */
-    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(72, 0, 227, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(72, 0, 227, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, var(--gray) 0 -3px 0 inset;
+    
 }
 
 .cell-hover:hover {
@@ -47,18 +51,29 @@
 }
 
 .cell-hover:active {
-    box-shadow: #D6D6E7 0 3px 7px inset;
+    box-shadow: var(--gray) 0 3px 7px inset;
     transform: translateY(2px);
-    background: lime;
+    background: #dd636b;
+    color: white;
 }   
 .cell-hover-default:active {
     box-shadow: #D6D6E7 0 3px 7px inset;
     transform: translateY(2px);
 }   
 .cell-active{
-    box-shadow: #D6D6E7 0 3px 7px inset;
+    box-shadow: var(--gray) 0 3px 7px inset;
     transform: translateY(2px);
-    background: lime;
+    background: #dd636b;
+}
+
+.cell-active-def{
+    box-shadow: #313132 0 3px 7px inset;
+    transform: translateY(2px);
+    background: #dd636b;
+}
+
+.cell-default:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(72, 0, 227, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset!important;
 }
 
 .bingo-grid {
@@ -66,4 +81,14 @@
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 100px);
     gap: 10px;
+}
+
+.accordion-button{
+    background: #ffaab0!important;
+}
+
+
+.accordion-button:focus {
+    outline: none!important;
+    box-shadow: none!important;
 }

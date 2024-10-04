@@ -106,10 +106,12 @@ const onClickCell = (cell, index, checked) => {
         checked[index] = !checked[index];
         if (checked[index]) {
             this.classList.add("cell-active");
+            this.classList.add("text-white");
             this.classList.remove("cell-hover");
         } else {
             this.classList.remove("cell-active");
             this.classList.add("cell-hover");
+            cell.classList.remove("text-white");
         }
         localStorage.setItem("checked", JSON.stringify(checked));
         check_win(checked);
@@ -119,9 +121,11 @@ const onClickCell = (cell, index, checked) => {
 const updateSquares = (squares, checked) => {
     squares.forEach((cell, index) => {
         cell.classList.replace("cell-active", "cell-hover");
+        cell.classList.remove("text-white");
         cell.children[0].innerText = dict[index];
         if (checked[index]) {
             cell.classList.add("cell-active");
+            cell.classList.add("text-white");
             cell.classList.remove("cell-active", "cell-hover");
         }
         onClickCell(cell, index, checked);
