@@ -29,7 +29,7 @@ const setLocalStorage = () => {
     localStorage.setItem("win", JSON.stringify(false));
 };
 
-const setCookie = (today) => {
+const setCookie = (today, shuffledOrder) => {
     let device_unique_seed = "";
     const parts = document.cookie.split("; ");
     device_unique_seed = parts.find((row) => row.startsWith("obchodka_bingo_device_unique_seed="))?.split("=")[1];
@@ -41,13 +41,15 @@ const setCookie = (today) => {
         let midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0);
         let expires = "; expires=" + midnight.toGMTString();
         document.cookie = "obchodka_bingo_device_unique_seed=" + device_unique_seed + expires + "; path=/";
-
-        const checked = JSON.parse(localStorage.getItem("checked"));
-        return [device_unique_seed, checked];
-    } else {
-        const checked = JSON.parse(localStorage.getItem("checked"));
-        return [device_unique_seed, checked];
     }
+
+    // Uložení promíchaného pořadí do cookies
+    if (shuffledOrder) {
+        document.cookie = "shuffledOrder=" + shuffledOrder + "; path=/";
+    }
+
+    const checked = JSON.parse(localStorage.getItem("checked"));
+    return [device_unique_seed, checked];
 };
 
 const shuffleArray = (device_unique_seed) => {
@@ -143,35 +145,48 @@ const mainLoop = () => {
     let today = new Date();
     let shuffleButton = document.getElementById("shuffle");
 
+    setToday(today);
 
     let [device_unique_seed, checked] = setCookie(today);
 
+    // Načtení promíchaného pořadí z cookies, pokud existuje
+    let shuffledOrder = getCookie("shuffledOrder");
+    if (shuffledOrder) {
+        dict = JSON.parse(shuffledOrder);
+    } else {
+        shuffleArray(device_unique_seed); // První promíchání
+    }
 
     const updateSquares = () => {
         let squares = document.getElementsByClassName("square");
         squares = [...squares];
 
         squares.forEach((cell, index) => {
+            cell.classList.remove("cell-active", "cell-hover");
             cell.children[0].innerText = dict[index];
             if (checked[index]) {
                 cell.classList.add("cell-active");
-                cell.classList.remove("cell-hover");
-            } else {
-                cell.classList.remove("cell-active");
-                cell.classList.add("cell-hover");
             }
-
-            onClickCell(cell, index, checked);
         });
     };
 
-    shuffleArray(device_unique_seed);
     updateSquares();
 
     shuffleButton.onclick = () => {
         shuffleArray(device_unique_seed);
-        checked.fill(false); // Resetování stavu aktivních buněk
+        checked.fill(false);
         localStorage.setItem("checked", JSON.stringify(checked));
-        updateSquares(); 
+
+        // Uložení nového promíchaného pořadí do cookies
+        setCookie(today, JSON.stringify(dict));
+
+        updateSquares();
     };
+};
+
+// Funkce pro získání hodnoty cookie
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 };
