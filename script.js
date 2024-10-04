@@ -69,7 +69,7 @@ const shuffleArray = (device_unique_seed) => {
 
 const win = () => {
     localStorage.setItem("win", JSON.stringify(true));
-    alert("Bingo!");
+    document.getElementById("win_pico").innerText = "Bingo!";
     localStorage.setItem("win", JSON.stringify(false));
 };
 
@@ -109,6 +109,7 @@ const onClickCell = (cell, index, checked) => {
             this.classList.add("text-white");
             this.classList.remove("cell-hover");
         } else {
+            document.getElementById("win_pico").innerText = "";
             this.classList.remove("cell-active");
             this.classList.add("cell-hover");
             cell.classList.remove("text-white");
@@ -120,6 +121,7 @@ const onClickCell = (cell, index, checked) => {
 
 const updateSquares = (squares, checked) => {
     squares.forEach((cell, index) => {
+        document.getElementById("win_pico").innerText = "";
         cell.classList.replace("cell-active", "cell-hover");
         cell.classList.remove("text-white");
         cell.children[0].innerText = dict[index];
