@@ -118,10 +118,11 @@ const onClickCell = (cell, index, checked) => {
 
 const updateSquares = (squares, checked) => {
     squares.forEach((cell, index) => {
-        cell.classList.remove("cell-active", "cell-hover");
+        cell.classList.replace("cell-active", "cell-hover");
         cell.children[0].innerText = dict[index];
         if (checked[index]) {
             cell.classList.add("cell-active");
+            cell.classList.remove("cell-active", "cell-hover");
         }
         onClickCell(cell, index, checked);
     });
