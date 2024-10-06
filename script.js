@@ -18,8 +18,8 @@ let dict = [
     "stránky školy",
     "Vy nic nevíte!",
     "Your sincerely",
+    "ženský mozek",
 ];
-
 const setToday = (today) => {
     let date_text = 
                     String(today.getDate()) +
@@ -70,6 +70,9 @@ const shuffleArray = (device_unique_seed) => {
 const win = () => {
     localStorage.setItem("win", JSON.stringify(true));
     document.getElementById("win_pico").innerText = "Bingo!";
+    document.getElementById("pepe_gif").src = "pepe.gif";
+    document.getElementById("pepe_gif").classList.replace("d-none", "d-block");
+
     localStorage.setItem("win", JSON.stringify(false));
 };
 
@@ -110,6 +113,7 @@ const onClickCell = (cell, index, checked) => {
             this.classList.remove("cell-hover");
         } else {
             document.getElementById("win_pico").innerText = "";
+            document.getElementById("pepe_gif").classList.replace("d-block", "d-none");
             this.classList.remove("cell-active");
             this.classList.add("cell-hover");
             this.classList.remove("text-white");
@@ -121,7 +125,8 @@ const onClickCell = (cell, index, checked) => {
 
 const updateSquares = (squares, checked) => {
     squares.forEach((cell, index) => {
-        document.getElementById("win_pico").innerText = "";     
+        document.getElementById("win_pico").innerText = "";
+        document.getElementById("pepe_gif").classList.add("d-none");
         cell.children[0].innerText = dict[index];
         if (checked[index]) {
             cell.classList.add("cell-active");
