@@ -30,7 +30,7 @@ const setToday = (today) => {
                     ". " +
                     String(today.getFullYear());
 
-    document.getElementById("header_date").innerText = date_text;
+    // document.getElementById("header_date").innerText = date_text;
 };
 
 const setLocalStorage = () => {
