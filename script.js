@@ -19,16 +19,18 @@ let dict = [
     "Vy nic nevíte!",
     "Your sincerely",
     "ženský mozek",
+    "děláte si kozy?",
+    "chewing gum into the basket",
 ];
 const setToday = (today) => {
-    let date_text = 
+    let date_text =
                     String(today.getDate()) +
                     ". " +
                     String(today.getMonth() + 1) +
                     ". " +
                     String(today.getFullYear());
 
-    // document.getElementById("header_date").innerText = date_text;
+    document.getElementById("header_date").innerText = date_text;
 };
 
 const setLocalStorage = () => {
@@ -100,7 +102,7 @@ const check_win = (checked) => {
     }
     if (checked[3] && checked[6] && checked[9] && checked[12]) {
         win();
-        return;
+        return true;
     }
 };
 
