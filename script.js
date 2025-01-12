@@ -34,14 +34,18 @@ const setToday = (today) => {
     // document.getElementById("header_date").innerText = date_text;
 };
 
-const allowedDomains = ["petakotek.github.io/obchodka_bingo"];
+const allowedPaths = ["petakotek.github.io/obchodka_bingo"];
+const currentPath = `${window.location.hostname}${window.location.pathname}`;
 
-if (!allowedDomains.includes(window.location.hostname)) {
-    console.error("Tento kód není povolen na této doméně: " + window.location.hostname);
-    throw new Error("Unauthorized domain.");
-}else{
-    console.log("Ahoj");
+console.log("Current path:", currentPath);
+
+if (!allowedPaths.includes(currentPath)) {
+    console.error("Nepovolený přístup na URL:", currentPath);
+    throw new Error("Unauthorized URL access.");
+} else {
+    console.log("URL povolena:", currentPath);
 }
+
 
 
 const setLocalStorage = () => {
