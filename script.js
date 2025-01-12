@@ -34,19 +34,6 @@ const setToday = (today) => {
     // document.getElementById("header_date").innerText = date_text;
 };
 
-const allowedPaths = "petakotek.github.io/obchodka_bingo";
-const currentPath = `${window.location.hostname}${window.location.pathname}`;
-
-console.log("Current path:", currentPath);
-
-if (!allowedPaths.includes(currentPath)) {
-    console.error("Nepovolený přístup na URL:", currentPath);
-} else {
-    console.log("URL povolena:", currentPath);
-}
-
-
-
 const setLocalStorage = () => {
     const checked = Array(16).fill(false);
     localStorage.setItem("checked", JSON.stringify(checked));
