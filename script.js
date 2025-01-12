@@ -1,3 +1,4 @@
+
 let dict = [
     "člověčee!",
     "vypněte ty plácačky",
@@ -32,6 +33,14 @@ const setToday = (today) => {
 
     // document.getElementById("header_date").innerText = date_text;
 };
+
+const allowedDomains = ["petakotek.github.io/obchodka_bingo"];
+
+if (!allowedDomains.includes(window.location.hostname)) {
+    console.error("Tento kód není povolen na této doméně: " + window.location.hostname);
+    throw new Error("Unauthorized domain.");
+}
+
 
 const setLocalStorage = () => {
     const checked = Array(16).fill(false);
