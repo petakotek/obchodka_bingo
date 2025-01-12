@@ -39,6 +39,8 @@ const allowedDomains = ["petakotek.github.io/obchodka_bingo"];
 if (!allowedDomains.includes(window.location.hostname)) {
     console.error("Tento kód není povolen na této doméně: " + window.location.hostname);
     throw new Error("Unauthorized domain.");
+}else{
+    console.log("Ahoj");
 }
 
 
